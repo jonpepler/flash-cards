@@ -23,9 +23,10 @@
   },
   "include": [
     "src",
+    "tests",
     ".eslintrc.js",
     "commitlint.config.js"
-  ],
+, "src/App.test.tsx"  ],
   "exclude": [
     "coverage"
   ]

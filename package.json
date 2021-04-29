@@ -20,6 +20,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
+    "@types/styled-components": "^5.1.9",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
     "eslint": "^7.20.0",
@@ -35,7 +36,8 @@
     "husky": "^6.0.0",
     "prettier": "2.2.1",
     "prettier-config-standard": "^4.0.0",
-    "standard-version": "^9.2.0"
+    "standard-version": "^9.2.0",
+    "styled-components": "^5.2.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -69,6 +71,7 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
+      "tests/**/*.{js,jsx,ts,tsx}",
       "!src/**/index.ts(x)?"
     ],
     "coverageThreshold": {
