@@ -25,5 +25,8 @@
     "src",
     ".eslintrc.js",
     "commitlint.config.js"
+  ],
+  "exclude": [
+    "coverage"
   ]
 }
