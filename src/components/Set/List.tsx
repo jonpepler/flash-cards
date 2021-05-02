@@ -12,12 +12,13 @@ const SetList = styled.ul`
 
 export interface ListProps {
   list: Set[]
+  onSelect: (id: string) => void
 }
 
-export const List: FC<ListProps> = ({ list }) => (
+export const List: FC<ListProps> = ({ list, onSelect }) => (
   <SetList>
     {list.map((set) => (
-      <Item key={set.id} item={set} />
+      <Item key={set.id} item={set} onSelect={() => onSelect(set.id)} />
     ))}
   </SetList>
 )
