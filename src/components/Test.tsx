@@ -6,7 +6,9 @@ interface TestProps {
 }
 
 export const Test: FC<TestProps> = ({ set }) => {
-  const questions = set.questions
+  const questions = set.questions.filter(
+    (question) => question.learnt === undefined || !question.learnt
+  )
   return (
     <>
       <h2>{set.title}</h2>
