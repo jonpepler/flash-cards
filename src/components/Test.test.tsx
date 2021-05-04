@@ -11,6 +11,7 @@ const singleQuestionSet: Set = {
 }
 
 it('shows a question', async () => {
+  const onlyPossibleQuestion = singleQuestionSet.questions[0].question
   const { getByText } = render(<Test set={singleQuestionSet} />)
-  expect(getByText(/Q/)).toBeInTheDocument()
+  expect(getByText(new RegExp(`^${onlyPossibleQuestion}$`))).toBeInTheDocument()
 })

@@ -54,7 +54,8 @@ it('shows a list of sets', async () => {
 })
 
 it('starts a test when a set is selected', async () => {
-  const { getByText } = renderAppWithContext()
+  const { getByText, queryByText } = renderAppWithContext()
   userEvent.click(getByText(sets[0].title))
-  expect(getByText(/Taking a test/)).toBeInTheDocument()
+  expect(getByText(sets[0].title)).toBeInTheDocument()
+  expect(queryByText(sets[1].title)).not.toBeInTheDocument()
 })

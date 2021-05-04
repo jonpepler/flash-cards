@@ -9,7 +9,7 @@ export const Test: FC<TestProps> = ({ set }) => {
   const questions = set.questions
   return (
     <>
-      <h2>Taking a test</h2>
+      <h2>{set.title}</h2>
       <div>{questions[0].question}</div>
     </>
   )
