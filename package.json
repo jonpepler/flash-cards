@@ -72,7 +72,8 @@
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
       "tests/**/*.{js,jsx,ts,tsx}",
-      "!src/**/index.ts(x)?"
+      "!src/**/index.ts(x)?",
+      "!src/theme.ts"
     ],
     "coverageThreshold": {
       "global": {

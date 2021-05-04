@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Set } from 'types'
 
 const Title = styled.p`
-  background-color: white;
+  background-color: ${(props) => props.theme.mainTextColour};
   padding: 15px;
   border-radius: 10px;
   font-weight: bolder;

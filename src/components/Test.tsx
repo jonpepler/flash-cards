@@ -1,5 +1,17 @@
 import { FC } from 'react'
+
+import styled from 'styled-components'
+import { mainTextColour } from 'theme'
+
 import { Set } from 'types'
+
+const Title = styled.h2`
+  ${mainTextColour}
+`
+
+const Question = styled.p`
+  ${mainTextColour}
+`
 
 interface TestProps {
   set: Set
@@ -11,8 +23,8 @@ export const Test: FC<TestProps> = ({ set }) => {
   )
   return (
     <>
-      <h2>{set.title}</h2>
-      <div>{questions[0].question}</div>
+      <Title>{set.title}</Title>
+      <Question>{questions[0].question}</Question>
     </>
   )
 }
