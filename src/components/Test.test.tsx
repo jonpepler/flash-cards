@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { Set } from 'types'
 
@@ -33,4 +34,12 @@ describe('shows an unlearnt question', () => {
       getByText(new RegExp(`^${onlyPossibleQuestion}$`))
     ).toBeInTheDocument()
   })
+})
+
+it("shows the current question's answer when prompted", async () => {
+  const { getByText } = render(<Test set={singleUnlearntQuestionSet} />)
+  userEvent.click(getByText(/Show Answer/))
+  expect(
+    getByText(singleUnlearntQuestionSet.questions[0].answer)
+  ).toBeInTheDocument()
 })
