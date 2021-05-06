@@ -29,17 +29,28 @@ export const Test: FC<TestProps> = ({ set }) => {
   const questions = set.questions.filter(
     (question) => question.learnt === undefined || !question.learnt
   )
+  const [currentQuestionIndex, setQuestionIndex] = useState<number>(0)
+
+  const setNextQuestion = (): void => {
+    setQuestionIndex(
+      currentQuestionIndex + 1 >= questions.length
+        ? 0
+        : currentQuestionIndex + 1
+    )
+  }
+
   return (
     <>
       <Title>{set.title}</Title>
-      <Question>{questions[0].question}</Question>
+      <Question>{questions[currentQuestionIndex].question}</Question>
       {showAnswer ? (
-        <Answer>{questions[0].answer}</Answer>
+        <Answer>{questions[currentQuestionIndex].answer}</Answer>
       ) : (
         <AnswerPrompt onClick={() => setShowAnswer(true)}>
           Show Answer
         </AnswerPrompt>
       )}
+      <button onClick={setNextQuestion}>Next Card</button>
     </>
   )
 }
