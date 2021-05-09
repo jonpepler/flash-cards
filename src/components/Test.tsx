@@ -9,16 +9,15 @@ const Title = styled.h2`
   ${mainTextColour}
 `
 
-const QuestionText = styled.p`
+const Text = styled.p`
   ${mainTextColour}
 `
+const QuestionText = Text
+const Answer = Text
+const AnswerCheck = Text
+const TestReport = Text
 
-const AnswerPrompt = styled.p`
-  ${mainTextColour}
-`
-const Answer = styled.p`
-  ${mainTextColour}
-`
+const AnswerPrompt = styled.button``
 
 interface TestProps {
   set: Set
@@ -93,7 +92,7 @@ export const Test: FC<TestProps> = ({ set }) => {
           {showAnswer ? (
             <>
               <Answer>{currentQuestion.answer}</Answer>
-              <p>Were you correct?</p>
+              <AnswerCheck>Were you correct?</AnswerCheck>
               <button onClick={() => answerQuestion(true)}>Correct</button>
               <button onClick={() => answerQuestion(false)}>Incorrect</button>
             </>
@@ -107,7 +106,7 @@ export const Test: FC<TestProps> = ({ set }) => {
           )}
         </>
       ) : (
-        <div>No more questions!</div>
+        <TestReport>No more questions!</TestReport>
       )}
     </>
   )
