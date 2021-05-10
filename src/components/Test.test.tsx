@@ -8,13 +8,15 @@ import { Test } from './Test'
 const singleQuestionSetWithNoLearnt: Set = {
   title: 'singleQuestionSet',
   id: '1',
-  questions: [{ question: 'Q', answer: 'A' }]
+  questions: [{ question: 'Q', answer: 'A' }],
+  fixedOrder: true
 }
 
 const singleUnlearntQuestionSet: Set = {
   title: 'singleQuestionSet',
   id: '1',
-  questions: [{ question: 'Q', answer: 'A', learnt: false }]
+  questions: [{ question: 'Q', answer: 'A', learnt: false }],
+  fixedOrder: true
 }
 
 const setQuestionMatcher = /Q[1-3]/
@@ -25,8 +27,10 @@ const set: Set = {
     { question: 'Q1', answer: 'A1', learnt: false },
     { question: 'Q2', answer: 'A2', learnt: false },
     { question: 'Q3', answer: 'A3', learnt: false }
-  ]
+  ],
+  fixedOrder: true
 }
+const randomOrderSet = { ...set, fixedOrder: false }
 
 describe('shows an unlearnt question', () => {
   test('when the learnt property has not been set', async () => {
@@ -122,4 +126,13 @@ describe('after showing the answer', () => {
       })
     })
   })
+})
+
+it('can show questions in a random order', async () => {
+  jest.spyOn(global.Math, 'random').mockReturnValue(0.1)
+  const { getByText } = render(<Test set={randomOrderSet} />)
+  expect(getByText(setQuestionMatcher).textContent).not.toEqual(
+    randomOrderSet.questions[0].question
+  )
+  jest.spyOn(global.Math, 'random').mockRestore()
 })

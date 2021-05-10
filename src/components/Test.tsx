@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { mainTextColour } from 'theme'
 
 import { Set, Question } from 'types'
+import { shuffleArray } from 'utils'
 
 const Title = styled.h2`
   ${mainTextColour}
@@ -32,7 +33,9 @@ const indexQuestions = (questions: Question[]): indexedQuestion[] =>
 
 export const Test: FC<TestProps> = ({ set }) => {
   const [questions, setQuestions] = useState<indexedQuestion[]>(
-    indexQuestions(set.questions)
+    indexQuestions(
+      set.fixedOrder ?? false ? set.questions : shuffleArray(set.questions)
+    )
   )
   const [filteredQuestions, setFilteredQuestions] = useState<indexedQuestion[]>(
     questions
