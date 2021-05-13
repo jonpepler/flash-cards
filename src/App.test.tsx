@@ -13,7 +13,8 @@ const sets: Set[] = [
     questions: [
       {
         question: 'E=mc^2?',
-        answer: 'yes'
+        answer: 'yes',
+        learnt: true
       }
     ]
   },
@@ -58,4 +59,9 @@ it('starts a test when a set is selected', async () => {
   userEvent.click(getByText(sets[0].title))
   expect(getByText(sets[0].title)).toBeInTheDocument()
   expect(queryByText(sets[1].title)).not.toBeInTheDocument()
+})
+
+it('shows the progress of previously attempted sets', async () => {
+  const { getByText } = renderAppWithContext()
+  expect(getByText(/100% learnt/)).toBeInTheDocument()
 })
