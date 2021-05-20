@@ -16,6 +16,7 @@ module.exports = {
     // base rule must be disabled: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/parser/README.md#configuration
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
-    'no-debugger': 1
+    'no-debugger': 1,
+    'no-void': ['error', { allowAsStatement: true }]
   }
 }

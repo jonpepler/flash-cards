@@ -1,14 +1,19 @@
-import { render, RenderResult } from '@testing-library/react'
+import {
+  render,
+  RenderResult,
+  waitForElementToBeRemoved
+} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
+import { set } from 'idb-keyval'
+
+import { App } from 'App'
 import { Set } from 'types'
 import { SetsProvider } from 'contexts'
 
-import { App } from 'App'
-import userEvent from '@testing-library/user-event'
-
 const sets: Set[] = [
   {
-    title: 'Test Set 1',
+    title: 'App.test.tsx Test Set 1',
     id: '1',
     questions: [
       {
@@ -19,7 +24,7 @@ const sets: Set[] = [
     ]
   },
   {
-    title: 'Test Set 2',
+    title: 'App.test.tsx Test Set 2',
     id: '2',
     questions: [
       {
@@ -32,7 +37,8 @@ const sets: Set[] = [
 
 const renderAppWithContext = (): RenderResult =>
   render(
-    <SetsProvider value={{ sets }}>
+    <SetsProvider
+      value={{ sets, setTestResults: () => undefined, saving: false }}>
       <App />
     </SetsProvider>
   )
@@ -62,6 +68,27 @@ it('starts a test when a set is selected', async () => {
 })
 
 it('shows the progress of previously attempted sets', async () => {
-  const { getByText } = renderAppWithContext()
+  await set('sets', sets)
+  const { getByText, findByText } = render(
+    <SetsProvider>
+      <App />
+    </SetsProvider>
+  )
+  await findByText(/App.test.tsx Test Set 1/)
   expect(getByText(/100% learnt/)).toBeInTheDocument()
+})
+
+it('remembers progress from attempted tests', async () => {
+  const { getByText, getAllByText, queryByText } = renderAppWithContext()
+
+  userEvent.click(getByText(sets[1].title))
+
+  userEvent.click(getByText(/Show Answer/))
+  userEvent.click(getByText(/Correct/))
+
+  await waitForElementToBeRemoved(() => queryByText(/Saving.../))
+
+  userEvent.click(getByText(/Go Back/))
+
+  expect(getAllByText(/100% learnt/)).toHaveLength(2)
 })

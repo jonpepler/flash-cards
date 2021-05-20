@@ -1,11 +1,11 @@
 import { SetList, Test } from 'components'
-import { SetsContext } from 'contexts/Sets'
-import { FC, useContext, useEffect, useState } from 'react'
+import { useSets } from 'contexts'
+import { FC, useEffect, useState } from 'react'
 import { Set } from 'types'
 import './App.css'
 
 export const App: FC = () => {
-  const { sets } = useContext(SetsContext)
+  const { sets } = useSets()
   const [setDisplayId, updateSetDisplayId] = useState<string | null>(null)
   const [testSet, updateTestSet] = useState<Set | null>(null)
 
@@ -23,7 +23,7 @@ export const App: FC = () => {
         {testSet === null ? (
           <SetList list={sets} onSelect={(id) => updateSetDisplayId(id)} />
         ) : (
-          <Test set={testSet}></Test>
+          <Test set={testSet} exit={() => updateSetDisplayId(null)}></Test>
         )}
       </main>
     </div>

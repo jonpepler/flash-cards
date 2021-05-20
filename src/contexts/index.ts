@@ -1,1 +1,1 @@
-export { SetsContext, SetsProvider } from './Sets'
+export { SetsProvider, useSets } from './Sets'

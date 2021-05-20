@@ -5,6 +5,7 @@ import { mainTextColour } from 'theme'
 
 import { Set, Question } from 'types'
 import { shuffleArray } from 'utils'
+import { useSets } from 'contexts'
 
 const Title = styled.h2`
   ${mainTextColour}
@@ -22,6 +23,7 @@ const AnswerPrompt = styled.button``
 
 interface TestProps {
   set: Set
+  exit: () => void
 }
 
 interface indexedQuestion extends Question {
@@ -31,7 +33,8 @@ interface indexedQuestion extends Question {
 const indexQuestions = (questions: Question[]): indexedQuestion[] =>
   questions.map((q, index) => ({ ...q, id: index }))
 
-export const Test: FC<TestProps> = ({ set }) => {
+export const Test: FC<TestProps> = ({ set, exit }) => {
+  const { setTestResults, saving } = useSets()
   const [questions, setQuestions] = useState<indexedQuestion[]>(
     indexQuestions(
       set.fixedOrder ?? false ? set.questions : shuffleArray(set.questions)
@@ -62,6 +65,12 @@ export const Test: FC<TestProps> = ({ set }) => {
     setFilteredQuestions(questions.filter((q) => !truthy(q.answered)))
   }, [questions])
 
+  useEffect(() => {
+    if (allQuestionsAnswered) {
+      setTestResults(set.id, questions)
+    }
+  }, [allQuestionsAnswered])
+
   const answerQuestion = (learnt: boolean): void => {
     setShowAnswer(false)
     setQuestions([
@@ -88,6 +97,7 @@ export const Test: FC<TestProps> = ({ set }) => {
 
   return (
     <>
+      <button onClick={exit}>Go Back</button>
       <Title>{set.title}</Title>
       {!allQuestionsAnswered ? (
         <>
@@ -109,7 +119,9 @@ export const Test: FC<TestProps> = ({ set }) => {
           )}
         </>
       ) : (
-        <TestReport>No more questions!</TestReport>
+        <TestReport>
+          No more questions! {saving ? 'Saving...' : null}
+        </TestReport>
       )}
     </>
   )

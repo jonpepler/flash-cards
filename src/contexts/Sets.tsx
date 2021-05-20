@@ -1,5 +1,6 @@
-import { createContext, FC } from 'react'
-import { Set } from 'types'
+import { useStateWithIdb } from 'hooks'
+import { createContext, useContext, FC, useState } from 'react'
+import { Question, Set } from 'types'
 
 // Shamelessly stolen for dev work from https://github.com/Amalazing/React-Quiz/blob/master/src/Questions/science-questions.json
 const basicSetList: Set[] = [
@@ -53,7 +54,7 @@ const basicSetList: Set[] = [
     ]
   },
   {
-    title: 'Test Set 2',
+    title: 'Test Set 2!',
     id: '2',
     questions: [
       {
@@ -66,17 +67,42 @@ const basicSetList: Set[] = [
 
 interface SetsContextData {
   sets: Set[]
+  setTestResults: (id: string, questions: Question[]) => void
+  saving: boolean
 }
 
 interface SetsProviderProps {
   value?: SetsContextData
 }
 
-export const SetsContext = createContext<SetsContextData>({ sets: [] })
+const SetsContext = createContext<SetsContextData | undefined>(undefined)
 export const SetsProvider: FC<SetsProviderProps> = ({ value, children }) => {
-  // for dev only
-  const sets = value?.sets ?? basicSetList
-  return (
-    <SetsContext.Provider value={{ sets }}>{children}</SetsContext.Provider>
+  const [saving, setSaving] = useState<boolean>(false)
+  const [sets, updateSets] = useStateWithIdb<Set[]>(
+    'sets',
+    // for dev only
+    value?.sets ?? basicSetList,
+    () => setSaving(false)
   )
+
+  const setTestResults: SetsContextData['setTestResults'] = (id, questions) => {
+    const testIndex = sets.findIndex((set) => set.id === id)
+    const newSets = [...sets]
+    newSets[testIndex] = { ...newSets[testIndex], questions }
+    setSaving(true)
+    updateSets(newSets)
+  }
+
+  return (
+    <SetsContext.Provider value={{ sets, setTestResults, saving }}>
+      {children}
+    </SetsContext.Provider>
+  )
+}
+export const useSets = (): SetsContextData => {
+  const context = useContext(SetsContext)
+  if (context === undefined) {
+    throw new Error('useSets must be used within a SetsProvider')
+  }
+  return context
 }
